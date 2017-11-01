@@ -1,0 +1,24 @@
+version: '{build}'
+environment:
+  matrix:
+    - ARDUINO_SDK_VERSION: 1.6.13
+    - ARDUINO_SDK_VERSION: 1.8.5
+install:
+  - ps: |
+      $env:ARDUINO_SDK_FILE = "arduino-$env:ARDUINO_SDK_VERSION-windows.zip"
+      $env:ARDUINO_SDK_URI = "https://downloads.arduino.cc/$env:ARDUINO_SDK_FILE"
+      $env:ARDUINO_SDK_FILE_PATH = "$env:APPVEYOR_BUILD_FOLDER/$env:ARDUINO_SDK_FILE"
+      $env:ARDUINO_SDK_PATH = "$env:APPVEYOR_BUILD_FOLDER/arduino-sdk"
+      $env:CMAKE_MAKE_PROGRAM = "$env:ARDIUNO_SDK_PATH}/hardware/tools/avr/utils/bin/make.exe"
+      (New-Object System.Net.WebClient).DownloadFile($env:ARDUINO_SDK_URI, $env:ARDUINO_SDK_FILE_PATH)
+      Expand-Archive "$env:ARDUINO_SDK_FILE_PATH" -DestinationPath "$env:ARDUINO_SDK_PATH"
+      mv "$env:ARDUINO_SDK_PATH/arduino-$env:ARDUINO_SDK_VERSION/*" "$env:ARDUINO_SDK_PATH"
+build_script:
+  - ps: |
+      mkdir build
+      cd build
+      echo "$env:ARDUINO_SDK_PATH"
+      ls "$env:ARDUINO_SDK_PATH"
+      cmake -G "MinGW Makefiles" -D ARDUINO_SDK_PATH="$env:ARDUINO_SDK_PATH" -D CMAKE_MAKE_PROGRAM="$env:CMAKE_MAKE_PROGRAM" ..
+      cat CMakeFiles/CMakeOutput.log
+      make

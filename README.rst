@@ -3,6 +3,8 @@ Arduino CMake
 =============
 .. image:: https://travis-ci.org/arduino-cmake/arduino-cmake.svg?branch=master
     :target: https://travis-ci.org/arduino-cmake/arduino-cmake
+.. image:: https://ci.appveyor.com/api/projects/status/newnetway/arduino-cmake?branch=master&svg=true
+    :target: https://ci.appveyor.com/project/newnetway/arduino-cmake
 
 Arduino is a great development platform, which is easy to use. It has everything a beginner should need. The *Arduino IDE* simplifies a lot of things for the standard user, but if you are a professional programmer the IDE can feel simplistic and restrictive.
 
